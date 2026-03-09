@@ -14,6 +14,7 @@ import com.buglife.main.GamePanel;
 import com.buglife.main.GameStateManager;
 import com.buglife.save.CloudSaveManager;
 import com.buglife.save.UserProfile;
+import com.buglife.utils.TelemetryManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -513,8 +514,8 @@ public class IdentifyState extends GameState {
         // Letter/number/underscore/dash input
         char c = (char) keyCode;
         if (playerName.length() < MAX_NAME_LENGTH) {
-            if (Character.isLetterOrDigit(c) || c == '_' || c == '-') {
-                playerName.append(Character.toUpperCase(c));
+            if ((c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_' || c == '-') {
+                playerName.append(c);
                 statusMessage = "";
             }
         } else {
@@ -551,6 +552,9 @@ public class IdentifyState extends GameState {
 
         // Lock name into the session
         UserProfile.setActivePlayer(uppedName);
+        
+        // MongoDB Telemetry Login
+        TelemetryManager.registerPlayer(uppedName, "password123"); 
 
         // Brief pause to show welcome, then menu
         new Thread(() -> {
@@ -588,6 +592,9 @@ public class IdentifyState extends GameState {
 
         // Register with the Overseer (async)
         CloudSaveManager.registerWithOverseerAsync(name);
+        
+        // MongoDB Telemetry Registration
+        TelemetryManager.registerPlayer(name, "password123");
 
         // Lock name into the session
         UserProfile.setActivePlayer(name);
