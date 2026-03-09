@@ -31,6 +31,7 @@ import com.buglife.save.SaveManager;
 import com.buglife.utils.DebugExporter;
 import com.buglife.utils.DebugOverlay;
 import com.buglife.utils.PerformanceMonitor;
+import com.buglife.utils.TelemetryManager;
 import com.buglife.world.World;
 
 public class PlayingState extends GameState {
@@ -95,6 +96,9 @@ public class PlayingState extends GameState {
 
         // Initialize world
         world = new World(currentLevel);
+
+        // Telemetry: Level Start
+        TelemetryManager.logLevelProgress(com.buglife.save.UserProfile.getActivePlayer(), currentLevel, "started");
 
         // Initialize player at level-specific spawn point
         Point playerSpawn = currentConfig.getPlayerSpawn();
@@ -287,6 +291,7 @@ public class PlayingState extends GameState {
             
         if (player.hasDiedFromWeb()) {
             logger.info("Game Over: Player died from webbed state");
+            TelemetryManager.logLevelProgress(com.buglife.save.UserProfile.getActivePlayer(), currentLevel, "died_webbed");
             soundManager.stopSound("music");
             soundManager.stopSound("chasing");
             soundManager.playSound("gameOver");
@@ -358,12 +363,14 @@ public class PlayingState extends GameState {
         }
 
         if (player.isOnLevelCompleteTile()) {
+            TelemetryManager.logLevelProgress(com.buglife.save.UserProfile.getActivePlayer(), currentLevel, "completed");
             soundManager.stopAllSounds();
             soundManager.playSound("level_complete");
             manager.setState(GameStateManager.LEVEL_COMPLETE);
             return;
         }
         if (player.getHunger() <= 0 && !player.isCrying()) {
+            TelemetryManager.logLevelProgress(com.buglife.save.UserProfile.getActivePlayer(), currentLevel, "died_hunger");
             soundManager.stopSound("music");
             soundManager.playSound("chasing");
             soundManager.playSound("gameOver");

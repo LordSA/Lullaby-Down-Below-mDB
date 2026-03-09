@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import com.buglife.main.GameStateManager;
+import com.buglife.main.GamePanel;
 import com.buglife.assets.SoundManager;
 
 import org.slf4j.Logger;

@@ -8,6 +8,7 @@ import com.buglife.states.LeaderboardState;
 import com.buglife.states.MenuState;
 import com.buglife.states.PlayingState;
 import com.buglife.states.SettingsState;
+import com.buglife.states.LoadingScreenState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +42,7 @@ public class GameStateManager {
     private SettingsState settingsState;
     private LevelCompleteState levelCompleteState;
     private LoadingScreenState loadingState;
+    private LeaderboardState leaderboardState;
 
     public GameStateManager(SoundManager soundManager, GamePanel gamePanel) {
         this.soundManager = soundManager;

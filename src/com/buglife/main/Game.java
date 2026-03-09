@@ -20,6 +20,7 @@ import com.buglife.config.GameConstants;
 import com.buglife.save.SaveManager;
 import com.buglife.save.UserProfile;
 import com.buglife.utils.PerformanceMonitor;
+import com.buglife.utils.TelemetryManager;
 
 public class Game implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
@@ -37,6 +38,7 @@ public class Game implements Runnable {
         // 0. Initialize ConfigManager first
         configManager = ConfigManager.getInstance();
         GameConstants.initialize();
+        TelemetryManager.initialize(); // Init telemetry (MongoDB)
         FPS = configManager.getInt("game.targetFPS", 60);
         logger.info("Target FPS set to: {}", FPS);
         
@@ -155,8 +157,9 @@ public class Game implements Runnable {
     public void cleanup() {
         running = false;
 
-        // Shutdown save manager (cloud services)
+        // Shutdown Managers
         SaveManager.shutdown();
+        TelemetryManager.shutdown();
 
         try {
             if (gameThread != null && gameThread.isAlive()) {

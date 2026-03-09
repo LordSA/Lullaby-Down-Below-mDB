@@ -20,6 +20,7 @@
         <logback.version>1.5.25</logback.version>
         <junit.version>6.0.3</junit.version>
         <jackson.version>2.21.1</jackson.version>
+        <mongodb.version>4.11.1</mongodb.version>
     </properties>
 
     <dependencies>
@@ -34,6 +35,13 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>1.5.32</version>
+        </dependency>
+
+        <!-- MongoDB Java Driver -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>${mongodb.version}</version>
         </dependency>
 
         <!-- JSON Processing -->
